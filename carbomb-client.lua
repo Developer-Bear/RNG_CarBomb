@@ -7,7 +7,7 @@ local armedVeh
 
 Citizen.CreateThread(function()
 	while true do
-        Wait(0)
+        Citizen.Wait(0)
         if Config.SpeedDeflagr then
             if placed then
                 local ped = GetPlayerPed(-1)
