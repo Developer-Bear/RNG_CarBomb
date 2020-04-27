@@ -18,15 +18,15 @@ Config.Locale = 'it'
 
 -- Choose The Deflagration System
 
-Config.Vanilla = false
+Config.Vanilla = true         -- Vehicle will explode after X seconds
 
-Config.SpeedDeflagr = false
+Config.SpeedDeflagr = false    -- Vehicle will explode after reach X speed
+ 
+Config.RemoteTrigger = false    -- Vehicle will explode after a key is pressed
 
-Config.RemoteTrigger = true
+Config.DelayedTimer = false    -- Vehicle will explode after X seconds since someone enters in 
 
-Config.DelayedTimer = false
-
-Config.InstantDeflagrSeatBusy = false
+Config.InstantDeflagrSeatBusy = false -- Vehicle will explode as soon as someone enters in driver's seat
 
 -- Choose Progbar And Notifications
 
