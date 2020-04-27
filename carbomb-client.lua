@@ -82,7 +82,7 @@ AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()
             if Config.Vanilla then
                 --print(veh)
                 if Config.UsingMythicNotifications then
-                    TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('vanilla') .. Config.TimeUntilDetonation .. ' secondi', length = 5500})
+                    TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('vanilla', Config.TimeUntilDetonation), length = 5500})
                 else
                     ShowNotification(_U('vanilla') .. Config.TimeUntilDetonation .. ' seconds')  
                 end

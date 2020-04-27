@@ -14,7 +14,7 @@ Config = {}
 
 -- Choose Language
 
-Config.Locale = 'it'
+Config.Locale = 'en'
 
 -- Choose The Deflagration System
 
@@ -32,9 +32,9 @@ Config.InstantDeflagrSeatBusy = false -- Vehicle will explode as soon as someone
 
 Config.UsingMythicNotifications = true
 
-Config.UsingMythicProgbar = true
+Config.UsingMythicProgbar = false
 
-Config.UsingProgressBars = false
+Config.UsingProgressBars = true
 
 -- Misc Config
 
