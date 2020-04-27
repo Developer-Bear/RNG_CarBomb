@@ -1,6 +1,6 @@
 ESX = nil
 
-TriggerEvent('tac:getSharedObject', function(obj) ESX = obj end)
+TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 
 ESX.RegisterUsableItem('ied', function(source)
     local xPlayer = ESX.GetPlayerFromId(source)
