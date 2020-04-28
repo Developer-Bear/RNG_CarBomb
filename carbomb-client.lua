@@ -1,58 +1,6 @@
 local timer = 0
-local placed = false
-local remoteplaced = false
-local checkseats = false
-local InstantDeflagrSeatBusy = false
 local armedVeh
-
-Citizen.CreateThread(function()
-	while true do
-        Citizen.Wait(0)
-        if Config.SpeedDeflagr then
-            if placed then
-                local ped = GetPlayerPed(-1)
-                local SpeedKM = GetEntitySpeed(armedVeh)*3.6
-                local SpeedMPH = GetEntitySpeed(armedVeh)*2.236936
-                --print('Speed: ' ..SpeedKM)
-                
-                if Config.UseMPH then
-                    if SpeedMPH > Config.maxSpeed then
-                        DetonateVehicle(armedVeh)
-                        placed = false
-                    end
-                end    
-                
-                if Config.UseKMH then
-                    if SpeedKM > Config.maxSpeed then
-                        DetonateVehicle(armedVeh)
-                        placed = false
-                    end 
-                end     
-            end   
-        elseif Config.RemoteTrigger then
-            local ped = GetPlayerPed(-1)
-            if IsControlJustReleased(0, Config.TriggerKey) and remoteplaced then
-                DetonateVehicle(armedVeh)
-                remoteplaced = false
-            end          
-        elseif Config.DelayedTimer then
-            if not IsVehicleSeatFree(armedVeh, -1) and checkseats  then
-                --print('Driver Busy')
-                RunTimer(armedVeh)
-                checkseats = false
-            elseif not IsVehicleSeatFree(armedVeh, 0) and checkseats then   
-                --print('Passenger Busy')
-                RunTimer(armedVeh)
-                checkseats = false
-            end
-        elseif Config.InstantDeflagrSeatBusy then
-            if not IsVehicleSeatFree(armedVeh, -1) and InstantDeflagrSeatBusy then  
-                DetonateVehicle(armedVeh)
-                InstantDeflagrSeatBusy = false
-            end          
-        end    
-    end
-end)
+local ped = GetPlayerPed(-1)
 
 RegisterNetEvent('RNG_CarBomb:CheckIfRequirementsAreMet')
 AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()
@@ -69,75 +17,86 @@ AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()
             loadAnimDict(animDict)
             Citizen.Wait(1000)
             TaskPlayAnim(ped, animDict, anim, 3.0, 1.0, -1, 0, 1, 0, 0, 0)
-            if Config.UsingProgressBars then
+            if Config.ProgressBarType == 0 then
+                return
+            elseif Config.ProgressBarType == 1 then
                 exports['progressBars']:startUI(Config.TimeTakenToArm * 1000, _U('arming'))
-            end
-            if Config.UsingMythicProgbar then
+            elseif Config.ProgressBarType == 2 then
                 FastMythticProg(_U('arming'), Config.TimeTakenToArm * 1000)
             end
             Citizen.Wait(Config.TimeTakenToArm * 1000)
-            ClearPedTasksImmediately(PlayerPedId())
+            ClearPedTasksImmediately(ped)
             TriggerServerEvent('RNG_CarBomb:RemoveBombFromInv')
             
-            if Config.Vanilla then
-                --print(veh)
+            if Config.DetonationType == 0 then
                 if Config.UsingMythicNotifications then
-                    TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('vanilla') .. Config.TimeUntilDetonation .. ' secondi', length = 5500})
+                    TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('vanilla', Config.TimeUntilDetonation), length = 5500})
                 else
-                    ShowNotification(_U('vanilla') .. Config.TimeUntilDetonation .. ' seconds')  
+                    ShowNotification(_U('vanilla', Config.TimeUntilDetonation))  
                 end
                 RunTimer(veh)
-            end          
-
-            if Config.SpeedDeflagr then
+            elseif Config.DetonationType == 1 then
                 if Config.UsingMythicNotifications then
-                    if Config.UseKMH then
-                        TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('speed') .. Config.maxSpeed .. ' Kmh', length = 5500})
-                    elseif Config.UseMPH then
-                        TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('speed') .. Config.maxSpeed .. ' MPH', length = 5500})
-                    end     
+                    TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('speed', Config.maxSpeed, Config.Speed), length = 5500})
                 else
-                    if Config.UseKMH then
-                        ShowNotification(_U('speed') .. Config.maxSpeed .. ' Kmh') 
-                    elseif Config.UseMPH then
-                        ShowNotification(_U('speed') .. Config.maxSpeed .. ' MPH')
-                    end         
+                    ShowNotification(_U('speed', Config.maxSpeed, Config.Speed)) 
                 end
-                placed = true
-                -- print(placed)
-            end  
-
-            if Config.RemoteTrigger then
+                armedVeh = veh
+            elseif Config.DetonationType == 2 then
                 if Config.UsingMythicNotifications then
                     TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('remote'), length = 5500})
                 else
-                    ShowNotification(_U('remote'))    
-                end 
-                remoteplaced = true
-                -- print('Remote placed') -- Debug
-                -- print(remoteplaced)
-            end  
-
-            if Config.DelayedTimer then
+                    ShowNotification(_U('remote'))
+                end
+                armedVeh = veh
+            elseif Config.DetonationType == 3 then
                 if Config.UsingMythicNotifications then
-                    TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('delayed') .. Config.TimeUntilDetonation .. ') secondi', length = 5500})
+                    TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('delayed', Config.TimeUntilDetonation), length = 5500})
                 else
-                    ShowNotification(_U('delayed') .. Config.TimeUntilDetonation .. ' secondi)')    
+                    ShowNotification(_U('delayed', Config.TimeUntilDetonation))    
                 end 
-                checkseats = true   
-            end
-            
-            if Config.InstantDeflagrSeatBusy then
+                armedVeh = veh 
+            elseif Config.DetonationType == 4 then
                 if Config.UsingMythicNotifications then
                     TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('instant'), length = 5500})
                 else
                     ShowNotification(_U('instant'))    
                 end 
-                InstantDeflagrSeatBusy = true
-            end    
-
-            armedVeh = veh -- Global assignment to the car
+                armedVeh = veh
+            end 
             
+            while armedVeh do
+                Citizen.Wait(0)
+                if Config.DetonationType == 1 and armedVeh then
+                    local speed = GetEntitySpeed(armedVeh)
+                    local SpeedKMH = speed * 3.6
+                    local SpeedMPH = speed * 2.236936
+                    
+                    if Config.Speed == 'MPH' then
+                        if SpeedMPH >= Config.maxSpeed then
+                            DetonateVehicle(armedVeh)
+                        end
+                    elseif Config.Speed == 'KPH' then
+                        if SpeedKMH >= Config.maxSpeed then
+                            DetonateVehicle(armedVeh)
+                        end 
+                    end        
+                elseif Config.DetonationType == 2 and armedVeh then
+                    if IsControlJustReleased(0, Config.TriggerKey) then
+                        DetonateVehicle(armedVeh)
+                    end          
+                elseif Config.DetonationType == 3 and armedVeh then
+                    if not IsVehicleSeatFree(armedVeh, -1)  then
+                        RunTimer(armedVeh)
+                    elseif not IsVehicleSeatFree(armedVeh, 0) then   
+                        RunTimer(armedVeh)
+                    end
+                elseif Config.DetonationType == 4 and armedVeh then
+                    if not IsVehicleSeatFree(armedVeh, -1) then  
+                        DetonateVehicle(armedVeh)
+                    end          
+                end    
+            end
         else
             if Config.UsingMythicNotifications then
                 TriggerEvent('mythic_notify:client:SendAlert', { type = 'error', text = _U('novehnearby'), length = 5500})
@@ -168,6 +127,7 @@ end
 function DetonateVehicle(veh)
     local vCoords = GetEntityCoords(veh)
     if DoesEntityExist(veh) then
+        armedVeh = nil
         AddExplosion(vCoords.x, vCoords.y, vCoords.z, 5, 50.0, true, false, true)
     end
 end
