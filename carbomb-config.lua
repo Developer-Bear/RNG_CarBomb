@@ -2,41 +2,23 @@ Config = {}
 
 Config.Locale = 'en' -- Choose Language
 
--- Choose The Deflagration System
+-- 0 (Explode After Countdown) | 1 (Explode once the veh reaches a set speed) | 2 (Remote Detonate on Key Press) | 3 (Detonate after veh is entered and timer ends) |
+-- 4 (Detonate Immediately After the vehicle is entered)
+Config.DetonationType = 4
 
-Config.Vanilla = false         -- Vehicle will explode after X seconds
+Config.ProgressBarType = 1 -- 0 (Disable) | 1 (ProgressBars) | 2 (MythicProgressBars)
 
-Config.SpeedDeflagr = false    -- Vehicle will explode after reach X speed
- 
-Config.RemoteTrigger = false    -- Vehicle will explode after a key is pressed
-
-Config.DelayedTimer = false    -- Vehicle will explode after X seconds since someone enters in 
-
-Config.InstantDeflagrSeatBusy = true -- Vehicle will explode as soon as someone enters in driver's seat
-
--- Choose Progbar And Notifications
-
-Config.UsingMythicNotifications = true
-
-Config.UsingMythicProgbar = false
-
-Config.UsingProgressBars = true
-
--- Misc Config
+Config.UsingMythicNotifications = true -- false (Default ESX Notifications) | true (Mythic Notifications Enabled)
 
 Config.TimeTakenToArm = 4 -- in seconds 
 
 Config.TimeUntilDetonation = 10 -- in seconds
 
-Config.TriggerKey = 47
+Config.TriggerKey = 47 -- If using type 2
 
-Config.maxSpeed = 150
+Config.maxSpeed = 50 -- if using type 1
 
--- Choose Speed
-
-Config.UseKMH = true
-
-Config.UseMPH = false
+Config.Speed = 'MPH' -- if using type 2
 
 
 
