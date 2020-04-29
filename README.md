@@ -1,5 +1,5 @@
 # RNG_CarBomb
- useable item that you attach to a vehicle
+ This is a useable item for the ESX framework that the player can plant on a car. There are five different methods of making the vehicle explode.
 
  ## Created for Rogue Nation Gaming by Bear
 
@@ -20,4 +20,4 @@
 ### Links
 Github: https://github.com/Developer-Bear/RNG_CarBomb
 
-FiveM Forum Posting: 
+FiveM Forum Posting: https://forum.cfx.re/t/release-esx-car-bomb/1164022/11

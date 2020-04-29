@@ -4,7 +4,7 @@ game 'gta5'
 
 description 'useable item that detonates after being attached to a vehicle'
 
-version '1.0.0'
+version '1.1.0'
 
 client_scripts {
     '@es_extended/locale.lua',
