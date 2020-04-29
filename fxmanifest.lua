@@ -15,9 +15,7 @@ client_scripts {
 
 server_scripts {
     '@es_extended/locale.lua',
-    'carbomb-server.lua',
-    'locales/en.lua',
-    'locales/it.lua'
+    'carbomb-server.lua'
 }
 
 shared_script 'carbomb-config.lua'
