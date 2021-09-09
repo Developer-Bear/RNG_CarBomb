@@ -6,7 +6,7 @@ RegisterNetEvent('RNG_CarBomb:CheckIfRequirementsAreMet')
 AddEventHandler('RNG_CarBomb:CheckIfRequirementsAreMet', function()
     local ped = GetPlayerPed(-1)
     local coords = GetEntityCoords(ped)
-    local veh = GetClosestVehicle(coords.x, coords.y, coords.z, 3.000, 0, 70)
+    local veh = GetClosestVehicle(coords.x, coords.y, coords.z, 3.000, 0, 71)
     local vCoords = GetEntityCoords(veh)
     local dist = GetDistanceBetweenCoords(coords.x, coords.y, coords.z, vCoords.x, vCoords.y, vCoords.z, false)
     local animDict = "anim@amb@business@weed@weed_inspecting_lo_med_hi@"
